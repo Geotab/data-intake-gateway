@@ -1,0 +1,617 @@
+openapi: 3.0.1
+info:
+  title: Data Intake Gateway
+  version: v0.1.2
+paths:
+  /Authentication/authenticate:
+    post:
+      tags:
+        - Authentication
+      summary: "Authenticate to the api"
+      description: "Authenticate against the api with credentials. Returns an AuthenticationStatus"
+      operationId: "authenticate"
+      requestBody:
+        description: "The username and password to authenticate with"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AuthenticateModel'
+      responses:
+        "200":
+          description: "authentication successful"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  Data:
+                    $ref: '#/components/schemas/AuthenticationStatus'
+                example:
+                  Error: []
+                  Data:
+                    Authenticated: true
+                    UserId: "bob"
+                    BearerToken:
+                      TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                      Created: "2019-07-26T00:00:00"
+                      Expires: "2019-07-26T00:00:00"
+                    RefreshToken:
+                      TokenString: "GWY0uLe3oCqByapJZrLlN1JKr34WUO4dDIDQMe0fmzs6bLHuF9455NWkMXo6"
+                      Created: "2019-07-26T00:00:00"
+                      Expires: "2019-07-26T00:00:00"
+
+        "400":
+          description: "Request was missing all or part of the required parameters"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "401":
+          description: "Credentials provided could not be used to authenticate successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+  /Authentication/refresh-token:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Authentication
+      summary: "Refresh authenticated session using refresh and bearer tokens"
+      description: ""
+      operationId: "refresh-token"
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshModel'
+      responses:
+        "200":
+          description: "Authentication refresh was successful"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  Data:
+                    $ref: '#/components/schemas/AuthenticationStatus'
+                example:
+                  Error: []
+                  Data:
+                    Authenticated: true
+                    UserId: "bob"
+                    BearerToken:
+                      TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+                      Created: "2019-07-26T00:00:00"
+                      Expires: "2019-07-26T00:00:00"
+                    RefreshToken:
+                      TokenString: "GWY0uLe3oCqByapJZrLlN1JKr34WUO4dDIDQMe0fmzs6bLHuF9455NWkMXo6"
+                      Created: "2019-07-26T00:00:00"
+                      Expires: "2019-07-26T00:00:00"
+        "400":
+          description: "Request was missing all or part of the required parameters"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "401":
+          description: "Tokens provided could not be used to authenticate successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "403":
+          description: "Insufficient permissions to perform operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+  /Authentication/revoke-token:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Authentication
+      summary: "Revoke current tokens"
+      description: ""
+      operationId: "revoke-token"
+      requestBody:
+        description: "Revoke the current set of tokens so they are no longer valid"
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/TokenRefreshModel'
+      responses:
+        "200":
+          description: "Token revokation was successful"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  Data:
+                    type: string
+                example:
+                  Error: []
+                  Data: "Refresh token revoked."
+        "400":
+          description: "Request was missing all or part of the required parameters"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "401":
+          description: "Tokens provided could not be used to authenticate successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "403":
+          description: "Insufficient permissions to perform operation"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+  /InvalidRecords:
+    get:
+      security:
+        - bearerAuth: []
+      tags:
+        - Invalid Records
+      parameters:
+        - name: nextResultKey
+          in: query
+          schema:
+            type: integer
+        - name: numberOfResults
+          in: query
+          schema:
+            type: integer
+            minimum: 1
+            maximum: 50000
+            default: 1000
+      responses:
+        "200":
+          description: "Fetch batch of invalid records"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  Data:
+                    $ref: '#/components/schemas/InvalidRecordSet'
+                example:
+                  Error: []
+                  Data:
+                    NextResultKey: 1002154023
+                    CurrentResultKey: 1002152089
+                    TotalNumberOfInvalidRecords: 16545
+                    CurrentNumberOfInvalidRecords: 200
+                    InvalidRecords:
+                      - BaseRecord:
+                          SerialNo: "4783209742374"
+                          Type: "GenericStatusRecord"
+                          DateTime: "2019-07-26T00:00:00"
+                        Cause: "Reason message was rejected"
+                        TimeStamp: "2019-07-26T00:00:00"
+                        UserId: "bob"
+                      - BaseRecord:
+                          SerialNo: "3810947127398"
+                          Type: "StatusRecord"
+                          DateTime: "2019-07-26T00:00:00"
+                          Code: 12
+                          Value: 5
+                        Cause: "Reason message was rejected"
+                        TimeStamp: "2019-07-26T00:00:00"
+                        UserId: "bob"
+
+        "400":
+          description: "Request was missing all or part of the required parameters"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "401":
+          description: "Tokens provided could not be used to authenticate successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+  /Records:
+    post:
+      security:
+        - bearerAuth: []
+      tags:
+        - Records
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                anyOf:
+                  - $ref: '#/components/schemas/AccelerationRecord'
+                  - $ref: '#/components/schemas/GenericStatusRecord'
+                  - $ref: '#/components/schemas/GpsRecord'
+                  - $ref: '#/components/schemas/StatusRecord'
+                  - $ref: '#/components/schemas/VinRecord'
+              example:
+                - SerialNo: "4783209742374"
+                  Type: "VinRecord"
+                  DateTime: "2019-07-26T00:00:00"
+                  VehicleIdentificationNumber: "1N4AL21E69N553288"
+                - SerialNo: "3810947127398"
+                  Type: "StatusRecord"
+                  DateTime: "2019-07-26T00:00:00"
+                  Code: 12
+                  Value: 5
+      responses:
+        "202":
+          description: "Records accepted for processing"
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  Error:
+                    type: array
+                    nullable: true
+                    items:
+                      type: string
+                  Data:
+                    type: string
+                    format: uuid
+                example:
+                  Error: []
+                  Data: "feeac962-4496-4458-a489-e2d9b4ea12ec"
+        "400":
+          description: "Request was missing all or part of the required parameters"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                  - type: object
+                    properties:
+                      Data:
+                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  schemas:
+    AuthenticationStatus:
+      type: object
+      properties:
+        Authenticated:
+          type: boolean
+        UserId:
+          type: string
+        BearerToken:
+          $ref: "#/components/schemas/Token"
+        RefreshToken:
+          $ref: "#/components/schemas/Token"
+    ApiErrorResponse:
+      type: object
+      properties:
+        Error:
+          type: array
+          items:
+            type: string
+        Data:
+          type: object
+    AuthenticateModel:
+      required:
+        - password
+        - username
+      type: object
+      properties:
+        Username:
+          type: string
+        Password:
+          type: string
+      additionalProperties: false
+    TokenRefreshModel:
+      required:
+        - bearerToken
+        - refreshToken
+      type: object
+      properties:
+        bearerToken:
+          type: string
+        refreshToken:
+          type: string
+      additionalProperties: false
+    Token:
+      type: object
+      properties:
+        TokenString:
+          type: string
+        Expires:
+          type: string
+          format: date-time
+        Created:
+          type: string
+          format: date-time
+    AccelerationRecord:
+      description: A data record class that contains acceleration data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            X:
+              type: integer
+              description: The X axis acceleration.
+            Y:
+              type: integer
+              description: The Y axis acceleration.
+            Z:
+              type: integer
+              description: The Z axis acceleration.
+    BaseRecord:
+      type: object
+      description: An abstract data record class (all fields are required).
+      properties:
+        Type:
+          type: string
+          description: Indicates the type of record.
+        dateTime:
+          type: string
+          format: date-time
+          description: Date and time of the record in the ISO 8601 RFC3339 format.
+        serialNo:
+          type: string
+          description: Device serial number.
+      additionalProperties: false
+    GenericStatusRecord:
+      description: A data record class that supports generalised data from a telematics device. Supports a specific set of codes.
+      allOf:
+        - $ref: '#/components/schemas/StatusRecord'
+        - type: object
+          properties:
+    GpsRecord:
+      description: A data record class that contains latitudinal and longitudinal location data and speed (km/h). Other ancillary flags are also supported.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            IsAuxiliary1On:
+              type: boolean
+              description: A value indicating whether the auxiliary is on.
+            IsAuxiliary2On:
+              type: boolean
+              description: A value indicating whether the auxiliary is on.
+            IsAuxiliary3On:
+              type: boolean
+              description: A value indicating whether the auxiliary is on.
+            IsAuxiliary4On:
+              type: boolean
+              description: A value indicating whether the auxiliary is on.
+            IsAuxiliary5On:
+              type: boolean
+              description: A value indicating whether the auxiliary is on.
+            IsAuxiliary6On:
+              type: boolean
+              description: A value indicating whether the auxiliary is on.
+            IsAuxiliary7On:
+              type: boolean
+              description: A value indicating whether the auxiliary is on.
+            IsAuxiliary8On:
+              type: boolean
+              description: A value indicating whether the auxiliary is on.
+            IsGpsValid:
+              type: boolean
+              description: A value indicating whether the GPS is valid.
+            IsIgnitionOn:
+              type: boolean
+              description: A value indicating whether the ignition is on.
+            Latitude:
+              type: number
+              format: float
+              description: The latitude.
+            Longitude:
+              type: number
+              format: float
+              description: The longitude.
+            Speed:
+              type: number
+              format: float
+              description: The speed in kilometers per hour.
+    StatusRecord:
+      description: A data record class that contains status data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            Code:
+              type: integer
+              description: The diagnostic code.
+            Value:
+              type: integer
+              description: The value of the diagnostic.
+    VinRecord:
+      description: A data record class that contains vehicle identification data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            VehicleIdentificationNumber:
+              type: string
+              description: Vehicle Identification Number.
+    InvalidRecordSet:
+      type: object
+      description: A data record class that contains invalid record data.
+      properties:
+        NextResultKey:
+          type: integer
+          format: int64
+          description: Cursor pointing to the next record after the current set.
+        CurrentResultKey:
+          type: integer
+          format: int64
+          description: Cursor pointing to the start of the current results.
+        TotalNumberOfInvalidRecords:
+          type: integer
+          format: int64
+          description: Total number of invalid records for the current user.
+        CurrentNumberOfInvalidRecords:
+          type: integer
+          format: int64
+          description: Number of invalid records in the current set.
+        InvalidRecords:
+          type: array
+          items:
+            $ref: '#/components/schemas/InvalidRecord'
+          description: Array of InvalidRecords.
+      additionalProperties: false
+    InvalidRecord:
+      type: object
+      description: A data record class that contains data which is not accepted by the API.
+      properties:
+        BaseRecord:
+          $ref: '#/components/schemas/BaseRecord'
+        Cause:
+          type: string
+          nullable: true
+          description: Reason the record was rejected.
+        TimeStamp:
+          type: string
+          format: date-time
+          description: Date and time the record was marked invalid in the ISO 8601 RFC3339 format.
+        UserId:
+          type: string
+          nullable: true
+          description: ID of the user who owns this record.
+      additionalProperties: false
