@@ -19,7 +19,7 @@ paths:
               $ref: '#/components/schemas/AuthenticateModel'
       responses:
         "200":
-          description: "authentication successful"
+          description: "Authentication successful"
           content:
             application/json:
               schema:
@@ -36,15 +36,15 @@ paths:
                   Error: []
                   Data:
                     Authenticated: true
-                    UserId: "bob"
+                    UserId: "dig@geo.tab"
                     BearerToken:
-                      TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-                      Created: "2019-07-26T00:00:00"
-                      Expires: "2019-07-26T00:00:00"
+                      TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODAwLCJleHAiOjE2MTMxMDYwMDAsImlhdCI6MTYxMjg0NjgwMH0.janBC23AuH2NzjN42Qt35HC0MuBfl7jaiu9k8jAbrpE"
+                      Created: "2021-02-09T05:00:00.000000Z"
+                      Expires: "2021-02-12T05:00:00.000000Z"
                     RefreshToken:
-                      TokenString: "GWY0uLe3oCqByapJZrLlN1JKr34WUO4dDIDQMe0fmzs6bLHuF9455NWkMXo6"
-                      Created: "2019-07-26T00:00:00"
-                      Expires: "2019-07-26T00:00:00"
+                      TokenString: "S3TjiZ90tdTZ0/ckIHCpE44dLaAgdvx+RpDDz51tCEFMMTitZXc4yQhq==jN"
+                      Created: "2021-02-09T05:00:00.000000Z"
+                      Expires: "2021-02-12T17:00:00.000000Z"
 
         "400":
           description: "Request was missing all or part of the required parameters"
@@ -112,15 +112,15 @@ paths:
                   Error: []
                   Data:
                     Authenticated: true
-                    UserId: "bob"
+                    UserId: "dig@geo.tab"
                     BearerToken:
-                      TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
-                      Created: "2019-07-26T00:00:00"
-                      Expires: "2019-07-26T00:00:00"
+                      TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODEwLCJleHAiOjE2MTMxMDYwMTAsImlhdCI6MTYxMjg0NjgxMH0.pXS0ehnRCwZSzGNLSYGlh_oJCnXieFZBu7HBV6y0b5Q"
+                      Created: "2019-07-26T00:00:10"
+                      Expires: "2019-07-26T00:00:10"
                     RefreshToken:
-                      TokenString: "GWY0uLe3oCqByapJZrLlN1JKr34WUO4dDIDQMe0fmzs6bLHuF9455NWkMXo6"
-                      Created: "2019-07-26T00:00:00"
-                      Expires: "2019-07-26T00:00:00"
+                      TokenString: "m=+tunBX6uDBY/Rk9OUQeZdCdmaQgzPHdGvVH2B3cuCXwjADdqvD44vyCr0Z"
+                      Created: "2019-07-26T00:00:10"
+                      Expires: "2019-07-26T00:00:10"
         "400":
           description: "Request was missing all or part of the required parameters"
           content:
@@ -293,21 +293,21 @@ paths:
                     CurrentNumberOfInvalidRecords: 200
                     InvalidRecords:
                       - BaseRecord:
-                          SerialNo: "4783209742374"
+                          SerialNo: "2396122106100"
                           Type: "GenericStatusRecord"
-                          DateTime: "2019-07-26T00:00:00"
+                          DateTime: "2021-02-10T01:00:00.500Z"
                         Cause: "Reason message was rejected"
-                        TimeStamp: "2019-07-26T00:00:00"
-                        UserId: "bob"
+                        TimeStamp: "2021-02-10T02:00:00Z"
+                        UserId: "dig@geo.tab"
                       - BaseRecord:
-                          SerialNo: "3810947127398"
+                          SerialNo: "6605174986852"
                           Type: "StatusRecord"
-                          DateTime: "2019-07-26T00:00:00"
+                          DateTime: "2021-02-10T01:00:00.010Z"
                           Code: 12
                           Value: 5
                         Cause: "Reason message was rejected"
-                        TimeStamp: "2019-07-26T00:00:00"
-                        UserId: "bob"
+                        TimeStamp: "2021-02-10T02:01:00Z"
+                        UserId: "dig@geo.tab"
 
         "400":
           description: "Request was missing all or part of the required parameters"
@@ -361,13 +361,13 @@ paths:
                   - $ref: '#/components/schemas/StatusRecord'
                   - $ref: '#/components/schemas/VinRecord'
               example:
-                - SerialNo: "4783209742374"
+                - SerialNo: "2396122106100"
                   Type: "VinRecord"
-                  DateTime: "2019-07-26T00:00:00"
-                  VehicleIdentificationNumber: "1N4AL21E69N553288"
-                - SerialNo: "3810947127398"
+                  DateTime: "2021-02-10T01:00:00Z"
+                  VehicleIdentificationNumber: "1NZI3SA5WPAJE2YR3"
+                - SerialNo: "8378832278466"
                   Type: "StatusRecord"
-                  DateTime: "2019-07-26T00:00:00"
+                  DateTime: "2021-02-10T01:00:01.500Z"
                   Code: 12
                   Value: 5
       responses:
@@ -500,7 +500,6 @@ components:
       allOf:
         - $ref: '#/components/schemas/StatusRecord'
         - type: object
-          properties:
     GpsRecord:
       description: A data record class that contains latitudinal and longitudinal location data and speed (km/h). Other ancillary flags are also supported.
       allOf:
