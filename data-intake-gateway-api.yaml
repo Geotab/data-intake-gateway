@@ -356,6 +356,8 @@ paths:
               items:
                 anyOf:
                   - $ref: '#/components/schemas/AccelerationRecord'
+                  - $ref: '#/components/schemas/BinaryRecord'
+                  - $ref: '#/components/schemas/DriverChangeRecord'
                   - $ref: '#/components/schemas/GenericStatusRecord'
                   - $ref: '#/components/schemas/GpsRecord'
                   - $ref: '#/components/schemas/StatusRecord'
@@ -495,6 +497,30 @@ components:
           type: string
           description: Device serial number.
       additionalProperties: false
+    BinaryRecord:
+      description: A data record class that supports arbitrary binary data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            Data:
+              type: string
+              format: byte
+              description: Arbitrary binary payload, Base64 encoded. Maximum size of 32745 bytes.
+    DriverChangeRecord:
+      description: A data record class that contains driver change data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            KeyType:
+              type: integer
+              format: byte (8-bit unsigned)
+              description: The key type.
+            DriverId:
+              type: string
+              format: byte
+              description: Driver ID, Base64 encoded.
     GenericStatusRecord:
       description: A data record class that supports generalised data from a telematics device. Supports a specific set of codes.
       allOf:
