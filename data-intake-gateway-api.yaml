@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v1.0.0
+  version: v1.0.2
 paths:
   /Authentication/authenticate:
     post:
@@ -515,7 +515,8 @@ components:
           properties:
             KeyType:
               type: integer
-              format: byte (8-bit unsigned)
+              minimum: 0
+              maximum: 255
               description: The key type.
             DriverId:
               type: string
@@ -564,15 +565,15 @@ components:
               description: A value indicating whether the ignition is on.
             Latitude:
               type: number
-              format: float
+              format: float (4-bytes signed)
               description: The latitude.
             Longitude:
               type: number
-              format: float
+              format: float (4-bytes signed)
               description: The longitude.
             Speed:
               type: number
-              format: float
+              format: float (4-bytes signed)
               description: The speed in kilometers per hour.
     StatusRecord:
       description: A data record class that contains status data.
@@ -595,6 +596,24 @@ components:
             VehicleIdentificationNumber:
               type: string
               description: Vehicle Identification Number.
+    BluetoothRecord:
+      description: A data record class that contains bluetooth data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            Address:
+              type: string
+              description: The string MAC address of the Bluetooth sensor  (e.g. FF:FF:FF:00:AA:9B).
+            Data:
+               type: number
+               format:  float (4-bytes signed)
+               description: The floating point value of the data. The meaning and unit of measure is dependent on data type. 
+            DataType:
+               type: integer
+               minimum: 0
+               maximum: 255
+               description: Identifies the type of bluetooth data contained in the data field.
     InvalidRecordSet:
       type: object
       description: A data record class that contains invalid record data.
