@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v1.0.2
+  version: v1.0.4
 paths:
   /Authentication/authenticate:
     post:
@@ -358,8 +358,12 @@ paths:
                   - $ref: '#/components/schemas/AccelerationRecord'
                   - $ref: '#/components/schemas/BinaryRecord'
                   - $ref: '#/components/schemas/DriverChangeRecord'
+                  - $ref: '#/components/schemas/GenericFaultRecord'
                   - $ref: '#/components/schemas/GenericStatusRecord'
                   - $ref: '#/components/schemas/GpsRecord'
+                  - $ref: '#/components/schemas/J1708FaultRecord'
+                  - $ref: '#/components/schemas/J1939FaultRecord'
+                  - $ref: '#/components/schemas/ObdiiFaultRecord'
                   - $ref: '#/components/schemas/StatusRecord'
                   - $ref: '#/components/schemas/VinRecord'
               example:
@@ -522,6 +526,18 @@ components:
               type: string
               format: byte
               description: Driver ID, Base64 encoded.
+    GenericFaultRecord:
+      description: A data record class that contains generic fault data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            Code:
+              type: integer
+              description: Fault code.
+            FaultStateActive:
+              type: boolean
+              description: Whether or not this fault state is active.
     GenericStatusRecord:
       description: A data record class that supports generalised data from a telematics device. Supports a specific set of codes.
       allOf:
@@ -575,6 +591,81 @@ components:
               type: number
               format: float (4-bytes signed)
               description: The speed in kilometers per hour.
+    J1708FaultRecord:
+      description: A data record class that contains J1708 fault data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            MessageId:
+              type: integer
+              minimum: 0
+              maximum: 255
+              description: Identifier for the component sending the message.
+            FailureModeIdentifier:
+              type: integer
+              minimum: 0
+              maximum: 255
+              description: Failure mode identifier associated with a diagnostic trouble code.
+            OccurrenceCount:
+              type: integer
+              minimum: 0
+              maximum: 255
+              description: Number of faults.
+            FaultStateActive:
+              type: boolean
+              description: Whether or not this fault state is active.
+    J1939FaultRecord:
+      description: A data record class that contains J1939 fault data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            SuspectParameterNumber:
+              type: integer
+              description: Unique number assigned to every suspect parameter number (SPN).
+            FailureModeIdentifier:
+              type: integer
+              minimum: 0
+              maximum: 255
+              description: Failure mode identifier associated with a diagnostic trouble code.
+            OccurrenceCount:
+              type: integer
+              minimum: 0
+              maximum: 255
+              description: Number of times this fault has been recorded.
+            SourceAddress:
+              type: integer
+              minimum: 0
+              maximum: 255
+              description: The address of a controller application.
+            MalfunctionLamp:
+              type: boolean
+              description: Lamp to indicate when there is an emission related trouble code active (MIL).
+            RedStopLamp:
+              type: boolean
+              description: Lamp to indicate a problem that is severe enough to warrant stopping the vehicle (RSL).
+            AmberWarningLamp:
+              type: boolean
+              description: Lamp to indicate a problem with the vehicle system but the vehicle does not need to be stopped immediately (AWL).
+            ProtectWarningLamp:
+              type: boolean
+              description: Lamp to indicate a problem with a vehicle system that is most likely not electronic subsystem related (PL).
+            FaultStateActive:
+              type: boolean
+              description: Whether or not this fault state is active.
+    ObdiiFaultRecord:
+      description: A data record class that contains OBD-II fault data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            Code:
+              type: string
+              description: Trouble code.
+            FaultStateActive:
+              type: boolean
+              description: Whether or not this fault state is active.
     StatusRecord:
       description: A data record class that contains status data.
       allOf:
