@@ -1,14 +1,14 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v1.0.4
+  version: v1.0.6
 paths:
   /Authentication/authenticate:
     post:
       tags:
         - Authentication
-      summary: "Authenticate to the api"
-      description: "Authenticate against the api with credentials. Returns an AuthenticationStatus"
+      summary: "Authenticate to the API"
+      description: "Authenticate against the API with credentials"
       operationId: "authenticate"
       requestBody:
         description: "The username and password to authenticate with"
@@ -54,10 +54,6 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -70,10 +66,6 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -84,7 +76,7 @@ paths:
         - bearerAuth: []
       tags:
         - Authentication
-      summary: "Refresh authenticated session using refresh and bearer tokens"
+      summary: "Refresh tokens using refresh and bearer tokens"
       description: ""
       operationId: "refresh-token"
       requestBody:
@@ -95,7 +87,7 @@ paths:
               $ref: '#/components/schemas/TokenRefreshModel'
       responses:
         "200":
-          description: "Authentication refresh was successful"
+          description: "Token refresh was successful"
           content:
             application/json:
               schema:
@@ -129,26 +121,18 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
                   Data: {}
         "401":
-          description: "Tokens provided could not be used to authenticate successfully"
+          description: "Tokens provided could not be used to refresh successfully"
           content:
             application/json:
               schema:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -161,10 +145,6 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -211,10 +191,6 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -227,10 +203,6 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -243,10 +215,6 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -317,10 +285,6 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -333,10 +297,6 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
                 example:
                   Error:
                     - "Error message here"
@@ -403,10 +363,18 @@ paths:
                 type: object
                 allOf:
                   - $ref: '#/components/schemas/ApiErrorResponse'
-                  - type: object
-                    properties:
-                      Data:
-                        type: object
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "413":
+          description: "Request payload was too large (size in bytes or too many records)"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
                 example:
                   Error:
                     - "Error message here"
