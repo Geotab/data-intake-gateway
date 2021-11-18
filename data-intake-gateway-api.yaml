@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v1.0.6
+  version: v1.0.7
 paths:
   /Authentication/authenticate:
     post:
@@ -166,8 +166,8 @@ paths:
             schema:
               $ref: '#/components/schemas/TokenRefreshModel'
       responses:
-        "200":
-          description: "Token revokation was successful"
+        "202":
+          description: "Token revocation request was accepted."
           content:
             application/json:
               schema:
@@ -182,7 +182,7 @@ paths:
                     type: string
                 example:
                   Error: []
-                  Data: "Refresh token revoked."
+                  Data: "Refresh token revoked and user bearer token enqueued as blocked."
         "400":
           description: "Request was missing all or part of the required parameters"
           content:
@@ -326,6 +326,7 @@ paths:
                   - $ref: '#/components/schemas/ObdiiFaultRecord'
                   - $ref: '#/components/schemas/StatusRecord'
                   - $ref: '#/components/schemas/VinRecord'
+              maxItems: 5000
               example:
                 - SerialNo: "2396122106100"
                   Type: "VinRecord"
