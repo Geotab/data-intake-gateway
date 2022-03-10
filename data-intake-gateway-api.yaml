@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v1.0.9
+  version: v2.0.0
   description: "Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints."
 paths:
   /Authentication/authenticate:
@@ -61,6 +61,18 @@ paths:
                   Data: {}
         "401":
           description: "Credentials provided could not be used to authenticate successfully"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "503":
+          description: "Service is unavailable"
           content:
             application/json:
               schema:
@@ -139,7 +151,19 @@ paths:
                     - "Error message here"
                   Data: {}
         "403":
-          description: "Insufficient permissions to perform operation"
+          description: "Token was already refreshed and/or cannot be found"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "503":
+          description: "Service is unavailable"
           content:
             application/json:
               schema:
@@ -197,7 +221,7 @@ paths:
                     - "Error message here"
                   Data: {}
         "401":
-          description: "Tokens provided could not be used to authenticate successfully"
+          description: "Tokens provided could not be used to revoke successfully"
           content:
             application/json:
               schema:
@@ -209,7 +233,19 @@ paths:
                     - "Error message here"
                   Data: {}
         "403":
-          description: "Insufficient permissions to perform operation"
+          description: "Token has already been revoked and/or cannot be found"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "503":
+          description: "Service is unavailable"
           content:
             application/json:
               schema:
@@ -304,6 +340,18 @@ paths:
                   Error:
                     - "Error message here"
                   Data: {}
+        "503":
+          description: "Service is unavailable"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
   /Records:
     post:
       security:
@@ -373,6 +421,18 @@ paths:
                   Data: {}
         "413":
           description: "Request payload was too large (size in bytes or too many records)"
+          content:
+            application/json:
+              schema:
+                type: object
+                allOf:
+                  - $ref: '#/components/schemas/ApiErrorResponse'
+                example:
+                  Error:
+                    - "Error message here"
+                  Data: {}
+        "503":
+          description: "Service is unavailable"
           content:
             application/json:
               schema:
