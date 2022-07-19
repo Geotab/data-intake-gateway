@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v2.0.0
+  version: v2.1.0
   description: "Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints."
 paths:
   /Authentication/authenticate:
@@ -511,13 +511,16 @@ components:
           properties:
             X:
               type: integer
-              description: The X axis acceleration.
+              format: int16
+              description: The X-axis acceleration (forward or backward) in milli-g (1000 milli-g = 1 G Gravitational force).
             Y:
               type: integer
-              description: The Y axis acceleration.
+              format: int16
+              description: The Y-axis acceleration (right or left) in milli-g (1000 milli-g = 1 G Gravitational force).
             Z:
               type: integer
-              description: The Z axis acceleration.
+              format: int16
+              description: The Z-axis acceleration (up or down) in milli-g (1000 milli-g = 1 G Gravitational force).
     BaseRecord:
       type: object
       description: An abstract data record class (all fields are required).
@@ -542,6 +545,7 @@ components:
             Data:
               type: string
               format: byte
+              maxLength: 32745
               description: Arbitrary binary payload, Base64 encoded. Maximum size of 32745 bytes.
     DriverChangeRecord:
       description: A data record class that contains driver change data.
@@ -557,6 +561,7 @@ components:
             DriverId:
               type: string
               format: byte
+              maxLength: 239
               description: Driver ID, Base64 encoded.
     GenericFaultRecord:
       description: A data record class that contains generic fault data.
@@ -731,7 +736,7 @@ components:
             Data:
                type: number
                format:  float (4-bytes signed)
-               description: The floating point value of the data. The meaning and unit of measure is dependent on data type. 
+               description: The floating point value of the data. The meaning and unit of measure is dependent on data type.
             DataType:
                type: integer
                minimum: 0
