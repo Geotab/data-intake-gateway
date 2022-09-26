@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v2.1.0
+  version: v2.1.1
   description: "Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints."
 paths:
   /Authentication/authenticate:
@@ -531,7 +531,7 @@ components:
         dateTime:
           type: string
           format: date-time
-          description: Date and time of the record in the ISO 8601 RFC3339 format.
+          description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
         serialNo:
           type: string
           description: Device serial number.
