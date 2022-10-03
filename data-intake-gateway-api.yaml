@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v2.1.1
+  version: v3.0.0
   description: "Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints."
 paths:
   /Authentication/authenticate:
@@ -372,7 +372,6 @@ paths:
                   - $ref: '#/components/schemas/GenericFaultRecord'
                   - $ref: '#/components/schemas/GenericStatusRecord'
                   - $ref: '#/components/schemas/GpsRecord'
-                  - $ref: '#/components/schemas/J1708FaultRecord'
                   - $ref: '#/components/schemas/J1939FaultRecord'
                   - $ref: '#/components/schemas/ObdiiFaultRecord'
                   - $ref: '#/components/schemas/StatusRecord'
@@ -628,30 +627,6 @@ components:
               type: number
               format: float (4-bytes signed)
               description: The speed in kilometers per hour.
-    J1708FaultRecord:
-      description: A data record class that contains J1708 fault data.
-      allOf:
-        - $ref: '#/components/schemas/BaseRecord'
-        - type: object
-          properties:
-            MessageId:
-              type: integer
-              minimum: 0
-              maximum: 255
-              description: Identifier for the component sending the message.
-            FailureModeIdentifier:
-              type: integer
-              minimum: 0
-              maximum: 255
-              description: Failure mode identifier associated with a diagnostic trouble code.
-            OccurrenceCount:
-              type: integer
-              minimum: 0
-              maximum: 255
-              description: Number of faults.
-            FaultStateActive:
-              type: boolean
-              description: Whether or not this fault state is active.
     J1939FaultRecord:
       description: A data record class that contains J1939 fault data.
       allOf:
