@@ -1,8 +1,11 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v3.0.0
-  description: "Please see the <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a> to learn more; there are important workflow and implementation details to consider for all endpoints."
+  version: v3.3.1
+  description: >-
+      Please see the
+      <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a>
+      to learn more; there are important workflow and implementation details to consider for all endpoints.
 paths:
   /Authentication/authenticate:
     post:
@@ -24,65 +27,46 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  Error:
-                    type: array
-                    nullable: true
-                    items:
-                      type: string
-                  Data:
-                    $ref: '#/components/schemas/AuthenticationStatus'
+                $ref: '#/components/schemas/AuthenticationSuccessResponse'
+              examples:
                 example:
-                  Error: []
-                  Data:
-                    Authenticated: true
-                    UserId: "dig@geo.tab"
-                    BearerToken:
-                      TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODAwLCJleHAiOjE2MTMxMDYwMDAsImlhdCI6MTYxMjg0NjgwMH0.janBC23AuH2NzjN42Qt35HC0MuBfl7jaiu9k8jAbrpE"
-                      Created: "2021-02-09T05:00:00.000000Z"
-                      Expires: "2021-02-12T05:00:00.000000Z"
-                    RefreshToken:
-                      TokenString: "S3TjiZ90tdTZ0/ckIHCpE44dLaAgdvx+RpDDz51tCEFMMTitZXc4yQhq==jN"
-                      Created: "2021-02-09T05:00:00.000000Z"
-                      Expires: "2021-02-12T17:00:00.000000Z"
-
+                  $ref: '#/components/examples/AuthenticatedResponseExample'
         "400":
           description: "Request was missing all or part of the required parameters"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "401":
           description: "Credentials provided could not be used to authenticate successfully"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        "429":
+          description: "Too many requests; rate limit quota exceeded; see public documentation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "503":
           description: "Service is unavailable"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
   /Authentication/refresh-token:
     post:
       security:
@@ -104,76 +88,55 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  Error:
-                    type: array
-                    nullable: true
-                    items:
-                      type: string
-                  Data:
-                    $ref: '#/components/schemas/AuthenticationStatus'
+                $ref: '#/components/schemas/AuthenticationSuccessResponse'
+              examples:
                 example:
-                  Error: []
-                  Data:
-                    Authenticated: true
-                    UserId: "dig@geo.tab"
-                    BearerToken:
-                      TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODEwLCJleHAiOjE2MTMxMDYwMTAsImlhdCI6MTYxMjg0NjgxMH0.pXS0ehnRCwZSzGNLSYGlh_oJCnXieFZBu7HBV6y0b5Q"
-                      Created: "2019-07-26T00:00:10"
-                      Expires: "2019-07-26T00:00:10"
-                    RefreshToken:
-                      TokenString: "m=+tunBX6uDBY/Rk9OUQeZdCdmaQgzPHdGvVH2B3cuCXwjADdqvD44vyCr0Z"
-                      Created: "2019-07-26T00:00:10"
-                      Expires: "2019-07-26T00:00:10"
+                  $ref: '#/components/examples/AuthenticatedResponseExample'
         "400":
           description: "Request was missing all or part of the required parameters"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "401":
           description: "Tokens provided could not be used to refresh successfully"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "403":
           description: "Token was already refreshed and/or cannot be found"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        "429":
+          description: "Too many requests; rate limit quota exceeded; see public documentation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "503":
           description: "Service is unavailable"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
   /Authentication/revoke-token:
     post:
       security:
@@ -192,70 +155,59 @@ paths:
               $ref: '#/components/schemas/TokenRefreshModel'
       responses:
         "202":
-          description: "Token revocation request was accepted."
+          description: "Token revocation request was accepted"
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  Error:
-                    type: array
-                    nullable: true
-                    items:
-                      type: string
-                  Data:
-                    type: string
-                example:
-                  Error: []
-                  Data: "Refresh token revoked and user bearer token enqueued as blocked."
+                $ref: '#/components/schemas/RevokeTokenSuccessResponse'
+              example:
+                Error: []
+                Data: "Refresh token revoked and user bearer token enqueued as blocked."
         "400":
           description: "Request was missing all or part of the required parameters"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "401":
           description: "Tokens provided could not be used to revoke successfully"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "403":
           description: "Token has already been revoked and/or cannot be found"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
+        "429":
+          description: "Too many requests; rate limit quota exceeded; see public documentation"
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
+                example:
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "503":
           description: "Service is unavailable"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
   /InvalidRecords:
     get:
       security:
@@ -280,78 +232,60 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  Error:
-                    type: array
-                    nullable: true
-                    items:
-                      type: string
-                  Data:
-                    $ref: '#/components/schemas/InvalidRecordSet'
-                example:
-                  Error: []
-                  Data:
-                    NextResultKey: 1002154023
-                    CurrentResultKey: 1002152089
-                    TotalNumberOfInvalidRecords: 16545
-                    CurrentNumberOfInvalidRecords: 200
-                    InvalidRecords:
-                      - BaseRecord:
-                          SerialNo: "2396122106100"
-                          Type: "GenericStatusRecord"
-                          DateTime: "2021-02-10T01:00:00.500Z"
-                          Code: 7
-                          Value: 0
-                        Cause: "Reason message was rejected"
-                        TimeStamp: "2021-02-10T02:00:00Z"
-                        UserId: "dig@geo.tab"
-                      - BaseRecord:
-                          SerialNo: "6605174986852"
-                          Type: "StatusRecord"
-                          DateTime: "2021-02-10T01:00:00.010Z"
-                          Code: 12
-                          Value: 5
-                        Cause: "Reason message was rejected"
-                        TimeStamp: "2021-02-10T02:01:00Z"
-                        UserId: "dig@geo.tab"
-
+                $ref: '#/components/schemas/InvalidRecordsResponse'
+              example:
+                Error: []
+                Data:
+                  NextResultKey: 1002154023
+                  CurrentResultKey: 1002152089
+                  TotalNumberOfInvalidRecords: 16545
+                  CurrentNumberOfInvalidRecords: 200
+                  InvalidRecords:
+                    - BaseRecord:
+                        SerialNo: "2396122106100"
+                        Type: "GenericStatusRecord"
+                        DateTime: "2021-02-10T01:00:00.500Z"
+                        Code: 7
+                        Value: 0
+                      Cause: "Reason message was rejected"
+                      TimeStamp: "2021-02-10T02:00:00Z"
+                      UserId: "dig@geo.tab"
+                    - BaseRecord:
+                        SerialNo: "6605174986852"
+                        Type: "StatusRecord"
+                        DateTime: "2021-02-10T01:00:00.010Z"
+                        Code: 12
+                        Value: 5
+                      Cause: "Reason message was rejected"
+                      TimeStamp: "2021-02-10T02:01:00Z"
+                      UserId: "dig@geo.tab"
         "400":
           description: "Request was missing all or part of the required parameters"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "401":
           description: "Tokens provided could not be used to authenticate successfully"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "503":
           description: "Service is unavailable"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
   /Records:
     post:
       security:
@@ -368,6 +302,7 @@ paths:
                 anyOf:
                   - $ref: '#/components/schemas/AccelerationRecord'
                   - $ref: '#/components/schemas/BinaryRecord'
+                  - $ref: '#/components/schemas/BluetoothRecord'
                   - $ref: '#/components/schemas/DriverChangeRecord'
                   - $ref: '#/components/schemas/GenericFaultRecord'
                   - $ref: '#/components/schemas/GenericStatusRecord'
@@ -393,55 +328,37 @@ paths:
           content:
             application/json:
               schema:
-                type: object
-                properties:
-                  Error:
-                    type: array
-                    nullable: true
-                    items:
-                      type: string
-                  Data:
-                    type: string
-                    format: uuid
-                example:
-                  Error: []
-                  Data: "feeac962-4496-4458-a489-e2d9b4ea12ec"
+                $ref: '#/components/schemas/RecordsResponse'
+              example:
+                Error: []
+                Data: "feeac962-4496-4458-a489-e2d9b4ea12ec"
         "400":
           description: "Request was missing all or part of the required parameters"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "413":
           description: "Request payload was too large (size in bytes or too many records)"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
         "503":
           description: "Service is unavailable"
           content:
             application/json:
               schema:
-                type: object
-                allOf:
-                  - $ref: '#/components/schemas/ApiErrorResponse'
+                $ref: '#/components/schemas/ErrorResponse'
+              examples:
                 example:
-                  Error:
-                    - "Error message here"
-                  Data: {}
+                  $ref: '#/components/examples/GenericErrorResponseExample'
 components:
   securitySchemes:
     bearerAuth:
@@ -460,19 +377,50 @@ components:
           $ref: "#/components/schemas/Token"
         RefreshToken:
           $ref: "#/components/schemas/Token"
-    ApiErrorResponse:
+    AuthenticationSuccessResponse:
       type: object
       properties:
         Error:
-          type: array
-          items:
-            type: string
+          $ref: "#/components/schemas/ResponseErrors"
         Data:
-          type: object
+          $ref: '#/components/schemas/AuthenticationStatus'
+    RevokeTokenSuccessResponse:
+      type: object
+      properties:
+        Error:
+          $ref: "#/components/schemas/ResponseErrors"
+        Data:
+          type: string
+    InvalidRecordsResponse:
+      type: object
+      properties:
+        Error:
+          $ref: "#/components/schemas/ResponseErrors"
+        Data:
+          $ref: '#/components/schemas/InvalidRecordSet'
+    RecordsResponse:
+      type: object
+      properties:
+        Error:
+          $ref: "#/components/schemas/ResponseErrors"
+        Data:
+          type: string
+          format: uuid
+    ResponseErrors:
+      type: array
+      items:
+        type: string
+    ErrorResponse:
+      type: object
+      properties:
+        Error:
+          $ref: "#/components/schemas/ResponseErrors"
+        Data:
+          type: string
     AuthenticateModel:
       required:
-        - password
-        - username
+        - Password
+        - Username
       type: object
       properties:
         Username:
@@ -482,13 +430,13 @@ components:
       additionalProperties: false
     TokenRefreshModel:
       required:
-        - bearerToken
-        - refreshToken
+        - BearerToken
+        - RefreshToken
       type: object
       properties:
-        bearerToken:
+        BearerToken:
           type: string
-        refreshToken:
+        RefreshToken:
           type: string
       additionalProperties: false
     Token:
@@ -527,11 +475,11 @@ components:
         Type:
           type: string
           description: Indicates the type of record.
-        dateTime:
+        DateTime:
           type: string
           format: date-time
           description: Date and time of the record in the ISO 8601 RFC3339, UTC zulu format yyyy-MM-ddTHH:mm:ss.ffffffZ is recommended. See DIG guide *Working with Dates* section for more details.
-        serialNo:
+        SerialNo:
           type: string
           description: Device serial number.
       additionalProperties: false
@@ -573,7 +521,7 @@ components:
               description: Fault code.
             FaultStateActive:
               type: boolean
-              description: Whether or not this fault state is active.
+              description: A value indicating whether the fault state is active.
     GenericStatusRecord:
       description: A data record class that supports generalised data from a telematics device. Supports a specific set of codes.
       allOf:
@@ -665,7 +613,7 @@ components:
               description: Lamp to indicate a problem with a vehicle system that is most likely not electronic subsystem related (PL).
             FaultStateActive:
               type: boolean
-              description: Whether or not this fault state is active.
+              description: A value indicating whether the fault state is active.
     ObdiiFaultRecord:
       description: A data record class that contains OBD-II fault data.
       allOf:
@@ -677,7 +625,7 @@ components:
               description: Trouble code.
             FaultStateActive:
               type: boolean
-              description: Whether or not this fault state is active.
+              description: A value indicating whether the fault state is active.
     StatusRecord:
       description: A data record class that contains status data.
       allOf:
@@ -762,3 +710,25 @@ components:
           nullable: true
           description: ID of the user who owns this record.
       additionalProperties: false
+  examples:
+    GenericErrorResponseExample:
+      summary: "Sample of a generic error response"
+      description: "Note that Error and Data are mutually exclusive. In error condition Error is populated with one or more errors; Data will be empty."
+      value:
+        Error: [ "Error message here" ]
+        Data: {}
+    AuthenticatedResponseExample:
+      summary: "Sample of a successful authenticated response."
+      value:
+        Error: [ ]
+        Data:
+          Authenticated: true
+          UserId: "dig@geo.tab"
+          BearerToken:
+            TokenString: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRpZ0BnZW8udGFiIiwibmJmIjoxNjEyODQ2ODEwLCJleHAiOjE2MTMxMDYwMTAsImlhdCI6MTYxMjg0NjgxMH0.pXS0ehnRCwZSzGNLSYGlh_oJCnXieFZBu7HBV6y0b5Q"
+            Created: "2019-07-26T00:00:10"
+            Expires: "2019-07-26T00:00:10"
+          RefreshToken:
+            TokenString: "m=+tunBX6uDBY/Rk9OUQeZdCdmaQgzPHdGvVH2B3cuCXwjADdqvD44vyCr0Z"
+            Created: "2019-07-26T00:00:10"
+            Expires: "2019-07-26T00:00:10"
