@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v3.3.1
+  version: v3.4.0
   description: >-
       Please see the
       <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a>
@@ -307,6 +307,7 @@ paths:
                   - $ref: '#/components/schemas/GenericFaultRecord'
                   - $ref: '#/components/schemas/GenericStatusRecord'
                   - $ref: '#/components/schemas/GpsRecord'
+                  - $ref: '#/components/schemas/J1708FaultRecord'
                   - $ref: '#/components/schemas/J1939FaultRecord'
                   - $ref: '#/components/schemas/ObdiiFaultRecord'
                   - $ref: '#/components/schemas/StatusRecord'
@@ -575,6 +576,47 @@ components:
               type: number
               format: float (4-bytes signed)
               description: The speed in kilometers per hour.
+    J1708FaultRecord:
+      description: A data record class that contains J1708 fault data.
+      allOf:
+        - $ref: '#/components/schemas/BaseRecord'
+        - type: object
+          properties:
+            MessageId:
+              type: integer
+              format: uint8
+              minimum: 0
+              maximum: 255
+              description: Identifier for the component sending the message.
+            ParameterId:
+              type: integer
+              format: uint16
+              minimum: 0
+              maximum: 511
+              nullable: true
+              description: Parameter identification without a related Subsystem ID.
+            SubsystemId:
+              type: integer
+              format: uint16
+              minimum: 0
+              maximum: 511
+              nullable: true
+              description: Identifies a section of the control system without a related Parameter ID.
+            FailureModeIdentifier:
+              type: integer
+              format: uint8
+              minimum: 0
+              maximum: 15
+              description: Failure mode identifier associated with a diagnostic trouble code.
+            OccurrenceCount:
+              type: integer
+              format: uint8
+              minimum: 0
+              maximum: 255
+              description: Number of faults.
+            FaultStateActive:
+              type: boolean
+              description: A value indicating whether the fault state is active.
     J1939FaultRecord:
       description: A data record class that contains J1939 fault data.
       allOf:
@@ -586,16 +628,19 @@ components:
               description: Unique number assigned to every suspect parameter number (SPN).
             FailureModeIdentifier:
               type: integer
+              format: uint8
               minimum: 0
               maximum: 255
               description: Failure mode identifier associated with a diagnostic trouble code.
             OccurrenceCount:
               type: integer
+              format: uint8
               minimum: 0
               maximum: 255
               description: Number of times this fault has been recorded.
             SourceAddress:
               type: integer
+              format: uint8
               minimum: 0
               maximum: 255
               description: The address of a controller application.
