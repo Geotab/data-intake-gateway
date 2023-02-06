@@ -1,13 +1,13 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v3.4.0
+  version: v3.4.1
   description: >-
       Please see the
       <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a>
       to learn more; there are important workflow and implementation details to consider for all endpoints.
 paths:
-  /Authentication/authenticate:
+  /authentication/authenticate:
     post:
       tags:
         - Authentication
@@ -67,7 +67,7 @@ paths:
               examples:
                 example:
                   $ref: '#/components/examples/GenericErrorResponseExample'
-  /Authentication/refresh-token:
+  /authentication/refresh-token:
     post:
       security:
         - bearerAuth: []
@@ -137,7 +137,7 @@ paths:
               examples:
                 example:
                   $ref: '#/components/examples/GenericErrorResponseExample'
-  /Authentication/revoke-token:
+  /authentication/revoke-token:
     post:
       security:
         - bearerAuth: []
@@ -208,7 +208,7 @@ paths:
               examples:
                 example:
                   $ref: '#/components/examples/GenericErrorResponseExample'
-  /InvalidRecords:
+  /invalidrecords:
     get:
       security:
         - bearerAuth: []
@@ -286,7 +286,7 @@ paths:
               examples:
                 example:
                   $ref: '#/components/examples/GenericErrorResponseExample'
-  /Records:
+  /records:
     post:
       security:
         - bearerAuth: []
