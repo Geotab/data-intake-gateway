@@ -1,7 +1,7 @@
 openapi: 3.0.1
 info:
   title: Data Intake Gateway
-  version: v3.4.1
+  version: v3.4.2
   description: >-
       Please see the
       <a href='https://docs.google.com/document/d/15uNuPqwFcPLe6vKs_JgY5nPTy2isQ3WYUu4oyQ3cEfQ'>Data Intake Gateway Guide</a>
@@ -519,7 +519,9 @@ components:
           properties:
             Code:
               type: integer
-              description: Fault code.
+              minimum: 128
+              maximum: 1999
+              description: Diagnostic ID code (of type fault). (Range >=128, <=1999)
             FaultStateActive:
               type: boolean
               description: A value indicating whether the fault state is active.
@@ -679,10 +681,10 @@ components:
           properties:
             Code:
               type: integer
-              description: The diagnostic code.
+              description: The diagnostic code (of type status). (Range <=127, >=2000)
             Value:
               type: integer
-              description: The value of the diagnostic.
+              description: The value of the diagnostic. (valid values depend on diagnostic code)
     VinRecord:
       description: A data record class that contains vehicle identification data.
       allOf:
